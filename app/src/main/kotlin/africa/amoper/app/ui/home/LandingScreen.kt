@@ -134,15 +134,15 @@ fun LandingScreen(
             Modifier.fillMaxWidth().padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Trust("✓", "Fast, reliable", "Checkout to doorstep")
-            Trust("✓", "Secure by design", "Trusted movement")
+            Trust("✓", "Fast, reliable", "Checkout to doorstep", Modifier.weight(1f))
+            Trust("✓", "Secure by design", "Trusted movement", Modifier.weight(1f))
         }
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Trust("⌖", "Local knowledge", "Kenya & Zambia")
-            Trust("?", "Human support", "Here when needed")
+            Trust("⌖", "Local knowledge", "Kenya & Zambia", Modifier.weight(1f))
+            Trust("?", "Human support", "Here when needed", Modifier.weight(1f))
         }
 
         SectionTitle("01 / AMOPER Logistics", "Move cargo across Africa.")
@@ -261,8 +261,8 @@ fun LandingScreen(
     }
 }
 
-@Composable private fun Trust(icon: String, title: String, detail: String) {
-    Card(Modifier.weight(1f), colors = CardDefaults.cardColors(containerColor = Color(0xFFF7F8F4))) {
+@Composable private fun Trust(icon: String, title: String, detail: String, modifier: Modifier = Modifier) {
+    Card(modifier = modifier, colors = CardDefaults.cardColors(containerColor = Color(0xFFF7F8F4))) {
         Column(Modifier.padding(12.dp)) {
             Text(icon, color = AmoperLime, fontWeight = FontWeight.Black)
             Text(title, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = AmoperNavy)
