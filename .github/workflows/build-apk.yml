@@ -1,0 +1,64 @@
+name: Build AMOPER Android APK
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-apk:
+    name: Build AMOPER APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Get the code
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # 2. Install Java 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # 3. Set up Gradle
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      # 4. Check project
+      - name: Check Gradle project
+        run: gradle --version
+
+      # 5. Build Debug APK
+      - name: Build Debug APK
+        run: gradle --no-daemon clean assembleDebug
+
+      # 6. Build Release APK
+      - name: Build Release APK
+        run: gradle --no-daemon assembleRelease
+
+      # 7. Show generated APK files
+      - name: Find APK files
+        run: |
+          echo "Generated APK files:"
+          find app/build/outputs/apk -type f -name "*.apk" -print
+
+      # 8. Upload APKs to GitHub
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: amoper-apks
+          path: |
+            app/build/outputs/apk/debug/*.apk
+            app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+          retention-days: 30
